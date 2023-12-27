@@ -5,7 +5,6 @@
 #include <fstream>
 #include <chrono>
 
-
 using namespace std;
 
 vector<string> reservedWords = {
@@ -46,7 +45,6 @@ bool isSeparator(const string& token) {
     return is != separators.end();
 }
 
-
 int main() {
     unordered_map<string, int> identifiersCount, operatorsCount, reservedWordsCount, separatorsCount;
     string currentToken = "";
@@ -65,7 +63,6 @@ int main() {
 
     while (getline(inputFile, line)) {
         lineCount++;
-
         for (size_t i = 0; i < line.length(); ++i) {
             char ch = line[i];
             //Comment handling '//'
@@ -103,7 +100,6 @@ int main() {
                 }
                 ch = line[i];
             }
-
             //Single comma handling
             if (ch == '\'') {
                 i += 1;
@@ -118,26 +114,19 @@ int main() {
             if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
                 continue;
             }
-            else if (isOperator(string(1, ch)) || isSeparator(string(1, ch))) {
-                if (isSeparator(string(1, ch))) {
-                    separatorsCount[string(1, ch)]++;
-                }
-                /*else if (isReservedWords(string(1, ch))) {
-                    reservedWordsCount[string(1, ch)]++;
-                }*/
-                else if (isOperator(string(1, ch))) {
-                    string chNext = "";
-                    chNext += line[i + 1];
-                    currentToken += string(1, ch) + chNext;
-                    if (isOperator(currentToken)) {
-                        operatorsCount[currentToken]++;
-                        i++;
-                        currentToken = "";
-                        continue;
-                    }
+            else if (isSeparator(string(1, ch))) separatorsCount[string(1, ch)]++;
+            else if (isOperator(string(1, ch))) {
+                string chNext = "";
+                chNext += line[i + 1];
+                currentToken += string(1, ch) + chNext;
+                if (isOperator(currentToken)) {
+                    operatorsCount[currentToken]++;
+                    i++;
                     currentToken = "";
-                    operatorsCount[string(1, ch)]++;
+                    continue;
                 }
+                currentToken = "";
+                operatorsCount[string(1, ch)]++;
             }
             else {
                 currentToken += ch;
@@ -155,7 +144,6 @@ int main() {
             }
         }
     }
-
     int subTotal = 0, grandTotal = 0;
     cout << "\n------------------------------\n" << endl;
     cout << "********* Identifiers *********\n" << endl;
